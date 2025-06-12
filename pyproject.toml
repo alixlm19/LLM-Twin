@@ -8,5 +8,6 @@ dependencies = [
     "chromedriver-autoinstaller>=0.6.4",
     "loguru>=0.7.3",
     "selenium>=4.33.0",
+    "webdriver-manager>=4.0.2",
 ]
 
