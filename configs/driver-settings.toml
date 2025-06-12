@@ -1,0 +1,20 @@
+[[driver]]
+name = "chrome"
+
+[[driver.options]]
+args = [
+	"no-sandbox"
+	, "disable-dev-shm-usage"
+	, "disable-popup-blocking"
+	, "disable-background-networking"
+	, "ignore-certificate-errors"
+]
+
+[[driver.options.kwargs]]
+headless = "new"
+log-level = 3
+user-data-dir = ""
+data-path = ""
+disk-cache-dir = ""
+remote-debugging-port = ""
+
