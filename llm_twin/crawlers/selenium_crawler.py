@@ -1,14 +1,15 @@
+import tomllib
+
 from selenium import webdriver
 
-from .base import BaseSeleniumCrawler
+from .base import BaseSeleniumCrawler, _DriverOptionsType
 
 
 class SeleniumCrawler(BaseSeleniumCrawler):
     def __init__(self, scroll_limit: int = 5) -> None:
         super().__init__()
 
-        options: BaseSeleniumCrawler._DriverOptionsType = webdriver.ChromeOptions()
-        self.set_extra_driver_options(options)
+        options: _DriverOptionsType = webdriver.ChromeOptions()
 
         self.scroll_limit: int = scroll_limit
         self.driver: _DriverType = webdriver.Chrome(options=options)
@@ -17,6 +18,12 @@ class SeleniumCrawler(BaseSeleniumCrawler):
     def build(cls) -> "SeleniumCrawler":
         crawler = cls()
         return crawler
+
+    def _read_config(
+        self, path: str = "./configs/driver-settings.toml"
+    ) -> _DriverOptionsType:
+        with open(path, "rb") as f:
+            config = tomllib.load(f)
 
     def attach_chrome_driver(self) -> "SeleniumCrawler":
         options: list[str] = [

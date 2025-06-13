@@ -1,10 +1,14 @@
 from abc import ABC, abstractmethod
-from typing import Any, TypeVar
+from typing import Any, Type, TypeVar
 
-from selenium import webdriver
+from selenium.webdriver.common.options import ArgOptions
 from selenium.webdriver.remote.webdriver import WebDriver
 
-_DriverType = TypeVar("_DriverType", bound=WebDriver)
+DriverType = TypeVar("DriverType", bound=WebDriver)
+DriverOptionsType = TypeVar(
+    "DriverOptionsType",
+    bound=ArgOptions,
+)
 
 
 class BaseCrawler(ABC):
@@ -17,17 +21,7 @@ class BaseCrawler(ABC):
 
 
 class BaseSeleniumCrawler(BaseCrawler, ABC):
-    _DriverOptionsType = TypeVar(
-        "_DriverOptionsType",
-        bound=(
-            webdriver.EdgeOptions
-            | webdriver.ChromeOptions
-            | webdriver.FirefoxOptions
-            | webdriver.SafariOptions
-        ),
-    )
-
     def set_options(
-        self, options: list[str], options_handler: _DriverOptionsType
+        self, options: list[str], options_handler: Type[DriverOptionsType]
     ) -> None:
-        self.options = options_handler(options)
+        self.options_handler = options_handler()
