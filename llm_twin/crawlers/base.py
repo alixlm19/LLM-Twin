@@ -9,7 +9,8 @@ from selenium import webdriver
 from selenium.webdriver.common.options import ArgOptions
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from llm_twin.crawlers.errors import InvalidDriverSettingsSchemaError
+from .errors import EmptyDriverSettingsError, InvalidDriverSettingsSchemaError
+from .schema import DriverOptions, DriverSettings
 
 
 class BaseCrawler(ABC):
@@ -58,11 +59,22 @@ class BaseSeleniumCrawler(BaseCrawler, ABC):
         with open(path, "rb") as f:
             settings = tomllib.load(f)
 
-            __import__("pprint").pprint(settings)
-            self.settings = settings[settings["use"]]
+            if not settings.keys():
+                raise EmptyDriverSettingsError(
+                    "Attempted to read and empty driver settings file."
+                )
 
-            options = self.settings["options"]
-            self.set_options(options)
+            selected_driver: str
+            if "use" in settings:
+                selected_driver = settings["use"]
+            else:
+                selected_driver = list(settings.keys())[0]
+
+            settings = settings[selected_driver]
+
+            self.settings: DriverSettings = settings
+
+            self.set_options(self.settings["options"])
             logger.success("Driver settings loaded successfully!")
 
         return self
@@ -70,7 +82,7 @@ class BaseSeleniumCrawler(BaseCrawler, ABC):
     @logger.catch
     def set_options(
         self,
-        options: dict[str, list[str] | dict[str, str]],
+        options: DriverOptions,
     ) -> "BaseSeleniumCrawler":
         option: str
         if "args" in options.keys():
