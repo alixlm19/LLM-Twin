@@ -1,7 +1,6 @@
-[[driver]]
-name = "chrome"
+use="chrome"
 
-[[driver.options]]
+[chrome.options]
 args = [
 	"no-sandbox"
 	, "disable-dev-shm-usage"
@@ -10,11 +9,11 @@ args = [
 	, "ignore-certificate-errors"
 ]
 
-[[driver.options.kwargs]]
+[chrome.options.kwargs]
 headless = "new"
 log-level = 3
 user-data-dir = ""
 data-path = ""
 disk-cache-dir = ""
-remote-debugging-port = ""
+remote-debugging-port = 9226
 
