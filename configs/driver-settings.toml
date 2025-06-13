@@ -10,10 +10,10 @@ args = [
 ]
 
 [chrome.options.kwargs]
-headless 				= "new"
-log-level 				= 3
-user-data-dir 			= "" # Leave empty to use a temp dir
-data-path 				= "" # Leave empty to use a temp dir
-disk-cache-dir 			= "" # Leave empty to use a temp dir
+headless                = "new"
+log-level               = 3
+user-data-dir           = "" # Leave empty to use a temp dir
+data-path               = "" # Leave empty to use a temp dir
+disk-cache-dir          = "" # Leave empty to use a temp dir
 remote-debugging-port 	= 9226
 
