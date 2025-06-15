@@ -4,3 +4,7 @@ class InvalidDriverSettingsSchemaError(Exception):
 
 class EmptyDriverSettingsError(Exception):
     pass
+
+
+class UnsupportedDriverDownloadError(Exception):
+    pass
