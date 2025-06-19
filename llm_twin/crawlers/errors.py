@@ -6,5 +6,9 @@ class EmptyDriverSettingsError(Exception):
     pass
 
 
-class UnsupportedDriverDownloadError(Exception):
+class UnsupportedDriverError(Exception):
+    pass
+
+
+class DriverBuildError(Exception):
     pass
