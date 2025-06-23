@@ -5,8 +5,12 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "beautifulsoup4>=4.13.4",
     "chromedriver-autoinstaller>=0.6.4",
+    "langchain>=0.3.26",
+    "langchain-community>=0.3.26",
     "loguru>=0.7.3",
+    "pydantic>=2.11.7",
     "pytest>=8.4.0",
     "selenium>=4.33.0",
     "webdriver-manager>=4.0.2",

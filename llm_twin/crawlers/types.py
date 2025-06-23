@@ -52,3 +52,17 @@ FIREFOX_BUNDLE = DriverBundle[
     service=webdriver.FirefoxService,
     driver_manager=GeckoDriverManager,
 )
+
+SUPPORTED_SERVICE_TYPES = (
+    webdriver.ChromeService | webdriver.EdgeService | webdriver.FirefoxService
+)
+
+SUPPORTED_DRIVER_TYPES = webdriver.Chrome | webdriver.Edge | webdriver.Firefox
+
+SUPPORTED_DRIVER_CLASS_TYPES = (
+    Type[webdriver.Chrome] | Type[webdriver.Edge] | Type[webdriver.Firefox]
+)
+
+SUPPORTED_OPTIONS_TYPES = (
+    webdriver.ChromeOptions | webdriver.EdgeOptions | webdriver.FirefoxOptions
+)

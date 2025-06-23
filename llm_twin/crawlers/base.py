@@ -2,18 +2,28 @@ import os
 import tempfile
 import tomllib
 from abc import ABC, abstractmethod
-from typing import Any, Type
+from typing import Type
 
 from loguru import logger
-from selenium import webdriver
+from webdriver_manager.core.manager import DriverManager
 
-from .errors import (
+from llm_twin.domain.documents import NoSQLBaseDocument
+
+from .exceptions import (
     EmptyDriverSettingsError,
     InvalidDriverSettingsSchemaError,
     UnsupportedDriverError,
 )
 from .schema import DriverOptions, DriverSettings
-from .types import CHROME_BUNDLE, EDGE_BUNDLE, FIREFOX_BUNDLE, DriverBundle
+from .types import (
+    CHROME_BUNDLE,
+    EDGE_BUNDLE,
+    FIREFOX_BUNDLE,
+    SUPPORTED_DRIVER_TYPES,
+    SUPPORTED_OPTIONS_TYPES,
+    SUPPORTED_SERVICE_TYPES,
+    DriverBundle,
+)
 
 SUPPORTED_DRIVERS: dict[str, DriverBundle] = {
     "chrome": CHROME_BUNDLE,
@@ -21,21 +31,9 @@ SUPPORTED_DRIVERS: dict[str, DriverBundle] = {
     "firefox": FIREFOX_BUNDLE,
 }
 
-SUPPORTED_SERVICE_TYPES = (
-    webdriver.ChromeService | webdriver.EdgeService | webdriver.FirefoxService
-)
-SUPPORTED_DRIVER_TYPES = webdriver.Chrome | webdriver.Edge | webdriver.Firefox
-SUPPORTED_DRIVER_CLASS_TYPES = (
-    Type[webdriver.Chrome] | Type[webdriver.Edge] | Type[webdriver.Firefox]
-)
-SUPPORTED_OPTIONS_TYPES = (
-    webdriver.ChromeOptions | webdriver.EdgeOptions | webdriver.FirefoxOptions
-)
-
 
 class BaseCrawler(ABC):
-    # TODO: change type of model
-    model: Any
+    model: Type[NoSQLBaseDocument]
 
     @abstractmethod
     def extract(self, url: str, /, **kwargs) -> None:
@@ -50,6 +48,8 @@ class BaseSeleniumCrawler(BaseCrawler, ABC):
         self._driver_path: str
         self._options: SUPPORTED_OPTIONS_TYPES
         self._service: SUPPORTED_SERVICE_TYPES
+        self._driver_bundle: DriverBundle
+        self._driver_manager: DriverManager
 
     def extract(self, url: str, /, **kwargs) -> None:
         return super().extract(url, **kwargs)
