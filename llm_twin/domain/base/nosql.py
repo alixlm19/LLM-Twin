@@ -1,13 +1,13 @@
 import uuid
 from abc import ABC
-from typing import Generic, TypeVar
+from typing import Generic, Type, TypeVar
 
 from pydantic import UUID4, BaseModel, ConfigDict, Field
 
 T = TypeVar("T", bound="NoSQLBaseDocument")
 
 
-class NoSQLBaseDocument(Generic[T], ABC, BaseModel):
+class NoSQLBaseDocument(BaseModel, Generic[T], ABC):
     id: UUID4 = Field(default_factory=uuid.uuid4)
 
     model_config = ConfigDict(
