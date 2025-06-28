@@ -2,7 +2,7 @@ import os
 import tempfile
 import tomllib
 from abc import ABC, abstractmethod
-from typing import Type
+from typing import List, Type, Union
 
 from loguru import logger
 from webdriver_manager.core.manager import DriverManager
@@ -59,12 +59,14 @@ class BaseSeleniumCrawler(BaseCrawler, ABC):
         if driver_name not in SUPPORTED_DRIVERS:
             raise UnsupportedDriverError()
 
+        logger.info(f"Attaching {driver_name} driver")
         self._driver_bundle = SUPPORTED_DRIVERS[driver_name]
         self._driver_manager = self._driver_bundle.driver_manager()
         self._driver_path = self._driver_manager.install()
 
         self._options = self._driver_bundle.options()
         self._service = self._driver_bundle.service(self._driver_path)
+        logger.success(f"{driver_name} driver attached!")
 
         return self
 
@@ -105,6 +107,7 @@ class BaseSeleniumCrawler(BaseCrawler, ABC):
         options: DriverOptions,
     ) -> "BaseSeleniumCrawler":
         """"""
+
         option: str
         if "args" in options.keys():
             for option_arg in options["args"]:
@@ -136,3 +139,9 @@ class BaseSeleniumCrawler(BaseCrawler, ABC):
         self._driver = self._driver_bundle.driver(
             options=self._options, service=self._service
         )
+
+    def _add_experimental_option(
+        self, name: str, value: Union[str, int, dict, List[str]]
+    ) -> None:
+        """Attach provisional experimental option adder method for unsupported drivers"""
+        logger.warning("Method not implemented for current driver.")

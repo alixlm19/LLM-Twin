@@ -12,3 +12,7 @@ class UnsupportedDriverError(Exception):
 
 class DriverBuildError(Exception):
     pass
+
+
+class InvalidDriverOptionError(Exception):
+    pass

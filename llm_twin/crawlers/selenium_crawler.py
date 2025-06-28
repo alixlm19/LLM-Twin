@@ -21,7 +21,11 @@ class SeleniumCrawler(BaseSeleniumCrawler):
         self.set_driver("firefox").load_config()
         return self
 
+    def set_extra_driver_options(self) -> None:
+        pass
+
     def build(self) -> "SeleniumCrawler":
+        self.set_extra_driver_options()
         self._build()
         return self
 

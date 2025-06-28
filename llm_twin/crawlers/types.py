@@ -1,4 +1,5 @@
-from typing import Generic, NamedTuple, Type, TypeVar
+from dataclasses import dataclass
+from typing import Generic, Type, TypeVar
 
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
@@ -11,7 +12,8 @@ TService = TypeVar("TService")
 TManager = TypeVar("TManager")
 
 
-class DriverBundle(NamedTuple, Generic[TDriver, TOptions, TService, TManager]):
+@dataclass
+class DriverBundle(Generic[TDriver, TOptions, TService, TManager]):
     driver: Type[TDriver]
     options: Type[TOptions]
     service: Type[TService]
