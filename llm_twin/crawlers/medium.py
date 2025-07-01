@@ -5,7 +5,7 @@ from llm_twin.crawlers.selenium_crawler import SeleniumCrawler
 from llm_twin.domain.documents import ArticleDocument, UserDocument
 
 
-class MediumCrawler(SeleniumCrawler):
+class MediumCrawler(SeleniumCrawler[ArticleDocument]):
     model = ArticleDocument
 
     def set_extra_driver_option(self) -> None:

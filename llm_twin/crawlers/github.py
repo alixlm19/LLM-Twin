@@ -10,7 +10,7 @@ from llm_twin.domain.documents import RepositoryDocument, UserDocument
 from .selenium_crawler import SeleniumCrawler
 
 
-class GitHubCrawler(SeleniumCrawler):
+class GitHubCrawler(SeleniumCrawler[RepositoryDocument]):
     model = RepositoryDocument
 
     def __init__(

@@ -1,30 +1,31 @@
 import time
+from typing import Self
 
 from .base import SUPPORTED_DRIVER_TYPES, BaseSeleniumCrawler
 
 
-class SeleniumCrawler(BaseSeleniumCrawler):
+class SeleniumCrawler[DocT](BaseSeleniumCrawler[DocT]):
     def __init__(self, scroll_limit: int = 5) -> None:
         super().__init__()
 
         self.scroll_limit: int = scroll_limit
 
-    def attach_chrome_driver(self) -> "SeleniumCrawler":
+    def attach_chrome_driver(self) -> Self:
         self.set_driver("chrome").load_config()
         return self
 
-    def attach_edge_driver(self) -> "SeleniumCrawler":
+    def attach_edge_driver(self) -> Self:
         self.set_driver("edge").load_config()
         return self
 
-    def attach_firefox_driver(self) -> "SeleniumCrawler":
+    def attach_firefox_driver(self) -> Self:
         self.set_driver("firefox").load_config()
         return self
 
     def set_extra_driver_options(self) -> None:
         pass
 
-    def build(self) -> "SeleniumCrawler":
+    def build(self) -> Self:
         self.set_extra_driver_options()
         self._build()
         return self

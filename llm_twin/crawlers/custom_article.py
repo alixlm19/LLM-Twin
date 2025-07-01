@@ -9,7 +9,7 @@ from llm_twin.domain.documents import ArticleDocument, UserDocument
 from .selenium_crawler import SeleniumCrawler
 
 
-class CustomArticleCrawler(SeleniumCrawler):
+class CustomArticleCrawler(SeleniumCrawler[ArticleDocument]):
     model = ArticleDocument
 
     def __init__(self) -> None:

@@ -1,19 +1,15 @@
 from dataclasses import dataclass
-from typing import Generic, Type, TypeVar
+from typing import Type
 
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
-TDriver = TypeVar("TDriver")
-TOptions = TypeVar("TOptions")
-TService = TypeVar("TService")
-TManager = TypeVar("TManager")
 
 
 @dataclass
-class DriverBundle(Generic[TDriver, TOptions, TService, TManager]):
+class DriverBundle[TDriver, TOptions, TService, TManager]:
     driver: Type[TDriver]
     options: Type[TOptions]
     service: Type[TService]

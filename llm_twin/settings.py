@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     LINKEDIN_USERNAME: str | None = None
     LINKEDIN_PASSWORD: str | None = None
 
+    # --- Error Handling
+    CRASH_ON_DEPRECATION: bool = False
+
     @classmethod
     def load_settings(cls) -> "Settings":
         """

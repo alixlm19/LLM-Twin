@@ -2,12 +2,12 @@ import os
 import tempfile
 import tomllib
 from abc import ABC, abstractmethod
-from typing import List, Type, Union
+from typing import List, Union
 
 from loguru import logger
 from webdriver_manager.core.manager import DriverManager
 
-from llm_twin.domain.documents import NoSQLBaseDocument
+from llm_twin.domain.types import DocT  # noqa: F401
 
 from .exceptions import (
     EmptyDriverSettingsError,
@@ -32,15 +32,18 @@ SUPPORTED_DRIVERS: dict[str, DriverBundle] = {
 }
 
 
-class BaseCrawler(ABC):
-    model: Type[NoSQLBaseDocument]
+_ = DocT
+
+
+class BaseCrawler[DocT](ABC):
+    model: type[DocT]
 
     @abstractmethod
     def extract(self, url: str, /, **kwargs) -> None:
         pass
 
 
-class BaseSeleniumCrawler(BaseCrawler, ABC):
+class BaseSeleniumCrawler[DocT](BaseCrawler[DocT], ABC):
     def __init__(self) -> None:
         super().__init__()
 
