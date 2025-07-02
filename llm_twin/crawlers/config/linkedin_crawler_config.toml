@@ -1,0 +1,31 @@
+[name]
+path=""
+tag="h1"
+[name.kwargs]
+class_="inline t-24 v-align-middle break-words"
+
+
+[about]
+path=""
+tag="h1"
+[about.kwargs]
+class_="display-flex ph5 pv3"
+
+[main-page]
+path=""
+tag="main"
+[main-page.kwargs]
+class_="display-flex ph5 pv3"
+
+[experience]
+path="/details/experience/"
+tag="div"
+[experience.kwargs]
+class_="pvs-list__container"
+
+[education]
+path="/details/education/"
+tag="div"
+[education.kwargs]
+class_="pvs-list__container"
+

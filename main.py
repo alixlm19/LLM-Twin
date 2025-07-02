@@ -9,7 +9,8 @@ def main():
     crawler = LinkedInCrawler()
     try:
         crawler = crawler.attach_chrome_driver().build()
-        crawler.login()
+        # crawler.login()
+        crawler.extract("https://www.linkedin.com/in/alixleon")
     except Exception as e:
         logger.error(f"Application crashed: {e}")
     finally:

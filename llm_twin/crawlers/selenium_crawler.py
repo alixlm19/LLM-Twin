@@ -1,14 +1,24 @@
+import os
 import time
-from typing import Self
+import tomllib
+from functools import cached_property
+from typing import Optional, Self
+
+from loguru import logger
+
+from llm_twin import settings
 
 from .base import SUPPORTED_DRIVER_TYPES, BaseSeleniumCrawler
 
 
 class SeleniumCrawler[DocT](BaseSeleniumCrawler[DocT]):
-    def __init__(self, scroll_limit: int = 5) -> None:
+    def __init__(
+        self, scroll_limit: int = 5, config_filename: Optional[str] = ""
+    ) -> None:
         super().__init__()
 
         self.scroll_limit: int = scroll_limit
+        self._crawler_config_filename: Optional[str] = config_filename
 
     def attach_chrome_driver(self) -> Self:
         self.set_driver("chrome").load_config()
@@ -33,6 +43,27 @@ class SeleniumCrawler[DocT](BaseSeleniumCrawler[DocT]):
     @property
     def driver(self) -> SUPPORTED_DRIVER_TYPES:
         return self._driver
+
+    @cached_property
+    def crawler_config(self) -> dict[str, dict[str, str | bool]]:
+        if not self._crawler_config_filename:
+            raise FileNotFoundError("No config file was specified.")
+
+        path_to_config = os.path.join(
+            settings.DEFAULT_CRAWLER_CONFIG_PATH, self._crawler_config_filename
+        )
+
+        if not os.path.exists(path_to_config):
+            raise FileNotFoundError(
+                f"Could not find configuration file @ {path_to_config}."
+            )
+
+        with open(path_to_config, "rb") as f:
+            config = tomllib.load(f)
+
+        logger.info(f"Configuration file [{self._crawler_config_filename}] loaded.")
+
+        return config
 
     def scroll_to_position(self, start: int, end: int) -> None:
         self.driver.execute_script(f"window.scrollTo({start}, {end});")

@@ -1,3 +1,5 @@
+import os
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -24,6 +26,11 @@ class Settings(BaseSettings):
 
     # --- Error Handling
     CRASH_ON_DEPRECATION: bool = False
+
+    # --- Crawler Config
+    DEFAULT_CRAWLER_CONFIG_PATH: str = "./" + os.path.join(
+        os.getcwd(), "/llm_twin/crawlers/config/"
+    )
 
     @classmethod
     def load_settings(cls) -> "Settings":
