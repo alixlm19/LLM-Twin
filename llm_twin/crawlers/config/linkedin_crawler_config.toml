@@ -29,3 +29,14 @@ tag="div"
 [education.kwargs]
 class_="pvs-list__container"
 
+[posts]
+path="/recent-activity/all/"
+tag="div"
+[posts.kwarsg]
+class_="pv-recent-activity-detail__core-rail"
+
+[licenses-and-certifications]
+path="/details/certifications/"
+tag="div"
+[licenses-and-certifications.kwargs]
+class_="pvs-list__container"
