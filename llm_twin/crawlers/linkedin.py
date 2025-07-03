@@ -45,19 +45,16 @@ class LinkedInCrawler(SeleniumCrawler[PostDocument]):
                 "LinkedIn scraper required the {LINKEDIN_USERNAME} and {LINKEDIN_PASSWORD} settings."
             )
 
-        try:
-            self.driver.find_element(By.ID, "username").send_keys(
-                settings.LINKEDIN_USERNAME
-            )
-            self.driver.find_element(By.ID, "password").send_keys(
-                settings.LINKEDIN_PASSWORD
-            )
-            self.driver.find_element(
-                By.CSS_SELECTOR,
-                "#organic-div > form > div.login__form_action_container > button",
-            ).click()
-        except Exception as e:
-            logger.error(e)
+        self.driver.find_element(By.ID, "username").send_keys(
+            settings.LINKEDIN_USERNAME
+        )
+        self.driver.find_element(By.ID, "password").send_keys(
+            settings.LINKEDIN_PASSWORD
+        )
+        self.driver.find_element(
+            By.CSS_SELECTOR,
+            "#organic-div > form > div.login__form_action_container > button",
+        ).click()
 
     @override
     @logger.catch
@@ -68,13 +65,12 @@ class LinkedInCrawler(SeleniumCrawler[PostDocument]):
         old_model = self.model.find(url=url)
 
         if old_model:
-            logger.info(f"Article profile exists in the database: {url}")
+            logger.info(f"LinkedIn post already exists in the database: {url}")
             return
 
         logger.info(f"Starting scraping data for profile {url}")
 
         self.login()
-        soup = self._get_page_content(url)
         data = {
             section: self._scrape_section(
                 url=f"{url}/{config.get('path', '')}",
@@ -83,7 +79,14 @@ class LinkedInCrawler(SeleniumCrawler[PostDocument]):
             )
             for section, config in self.crawler_config.items()
         }
-        __import__("pprint").pprint(data)
+
+        self.driver.get(url)
+        time.sleep(5)
+        button = self.driver.find_element()
+        button.click()
+
+        self.scroll_page()
+        soup = self._soup
 
     def _scrape_section(self, url: str, *args: Any, **kwargs: Any) -> str:
         """Scrape a specific section of the LinkedIn profile."""
@@ -93,18 +96,6 @@ class LinkedInCrawler(SeleniumCrawler[PostDocument]):
             return parent_div.get_text(strip=True)
 
         return ""
-
-    def _scrape_experience(self, profile_url: str) -> str:
-        soup = self._get_page_content(profile_url + "/details/experience/")
-        content = soup.find("section", {"id": "experience"})
-
-        if content:
-            return content.get_text(strip=True)
-
-        return ""
-
-    def _scrape_education(self, profile_url: str) -> str:
-        pass
 
     @property
     def _soup(self) -> BeautifulSoup:
