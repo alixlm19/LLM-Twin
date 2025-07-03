@@ -45,7 +45,9 @@ class SeleniumCrawler[DocT](BaseSeleniumCrawler[DocT]):
         return self._driver
 
     @cached_property
-    def crawler_config(self) -> dict[str, dict[str, str | bool]]:
+    def crawler_config(
+        self,
+    ) -> dict[str, dict[str, str | dict[str, str]] | list[dict[str, str]]]:
         if not self._crawler_config_filename:
             raise FileNotFoundError("No config file was specified.")
 
