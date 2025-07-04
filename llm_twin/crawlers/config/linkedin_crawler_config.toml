@@ -1,42 +1,77 @@
+# --- Start of `name` section
 [name]
 path=""
 tag="h1"
 [name.kwargs]
 class_="inline t-24 v-align-middle break-words"
+# --- End of `name` section
 
-
+# --- Start of `about` section
 [about]
 path=""
-tag="h1"
+tag="div"
 [about.kwargs]
 class_="display-flex ph5 pv3"
+# --- End of `about` section
 
+# --- Start of `main-page` section
 [main-page]
 path=""
 tag="main"
-[main-page.kwargs]
-class_="display-flex ph5 pv3"
+# --- End of `main-page` section
 
+# --- Start of `experience` section
 [experience]
 path="/details/experience/"
 tag="div"
 [experience.kwargs]
 class_="pvs-list__container"
 
+[experience.children]
+[experience.children.item]
+tag="li"
+[experience.children.item.kwargs]
+class_="pvs-list__paged-list-item"
+# --- End of `experience` section
+
+# --- Start of `education` section
 [education]
 path="/details/education/"
 tag="div"
 [education.kwargs]
 class_="pvs-list__container"
 
+[education.children]
+[education.children.item]
+tag="li"
+[education.children.item.kwargs]
+class_="pvs-list__paged-list-item"
+# --- End of `education` section
+
+# --- Start of `posts` section
 [posts]
 path="/recent-activity/all/"
 tag="div"
-[posts.kwarsg]
+[posts.kwargs]
 class_="pv-recent-activity-detail__core-rail"
 
+[posts.children]
+[posts.children.content]
+tag="div"
+[posts.children.content.kwargs]
+class_="pv-recent-activity-detail__core-rail"
+
+[posts.children.images]
+tag="img"
+[posts.children.images.kwargs]
+class_="pv-recent-activity-detail__core-rail"
+# --- End of `posts` section
+
+# --- Start of `licenses-and-certifications` section
 [licenses-and-certifications]
 path="/details/certifications/"
 tag="div"
 [licenses-and-certifications.kwargs]
 class_="pvs-list__container"
+# --- End of `licenses-and-certifications` section
+

@@ -1,4 +1,4 @@
-use="edge"
+use="chrome"
 
 [chrome.options]
 args = [

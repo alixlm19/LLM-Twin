@@ -2,7 +2,7 @@ import os
 import time
 import tomllib
 from functools import cached_property
-from typing import Optional, Self
+from typing import Any, Optional, Self
 
 from loguru import logger
 
@@ -47,7 +47,7 @@ class SeleniumCrawler[DocT](BaseSeleniumCrawler[DocT]):
     @cached_property
     def crawler_config(
         self,
-    ) -> dict[str, dict[str, str | dict[str, str]] | list[dict[str, str]]]:
+    ) -> dict[str, dict[str, Any]]:
         if not self._crawler_config_filename:
             raise FileNotFoundError("No config file was specified.")
 

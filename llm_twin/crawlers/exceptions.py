@@ -1,18 +1,26 @@
-class InvalidDriverSettingsSchemaError(Exception):
+class CrawlerError(Exception):
     pass
 
 
-class EmptyDriverSettingsError(Exception):
+class InvalidDriverSettingsSchemaError(CrawlerError):
     pass
 
 
-class UnsupportedDriverError(Exception):
+class EmptyDriverSettingsError(CrawlerError):
     pass
 
 
-class DriverBuildError(Exception):
+class UnsupportedDriverError(CrawlerError):
     pass
 
 
-class InvalidDriverOptionError(Exception):
+class DriverBuildError(CrawlerError):
+    pass
+
+
+class InvalidDriverOptionError(CrawlerError):
+    pass
+
+
+class UnsupportedTagError(CrawlerError):
     pass
