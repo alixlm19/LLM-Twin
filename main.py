@@ -1,11 +1,14 @@
 from loguru import logger
 
+from llm_twin import settings
 from llm_twin.crawlers.linkedin import LinkedInCrawler
 
 
 def main():
     print("Hello from llm-twin!")
 
+    settings.LINKEDIN_USERNAME = "alixlm19@hotmail.com"
+    settings.LINKEDIN_PASSWORD = "AU4L3-BdcpYd!SE"
     crawler = LinkedInCrawler()
     try:
         crawler = crawler.attach_chrome_driver().build()

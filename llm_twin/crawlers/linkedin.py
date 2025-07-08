@@ -1,10 +1,11 @@
+import json
 import re
 import time
 from functools import lru_cache
 from typing import Any, Iterable, cast, override
 
 from bs4 import BeautifulSoup, Tag
-from bs4.element import PageElement
+from bs4.element import PageElement, ResultSet
 from loguru import logger
 from selenium.webdriver.common.by import By
 
@@ -104,15 +105,19 @@ class LinkedInCrawler(SeleniumCrawler[PostDocument]):
                     **section_kwargs,
                 )
 
-        for k, v in data.items():
-            print(k, end=": ")
-            if isinstance(v, list):
-                for vv in v:
-                    print(v)
-                    print("*" * 80)
-                    print()
-            else:
-                print(v)
+        # for k, v in data.items():
+        #     print(k, end=": ")
+        #     if isinstance(v, list):
+        #         for vv in v:
+        #             print(v)
+        #             print("*" * 80)
+        #             print()
+        #     else:
+        #         print(v)
+        #
+        with open("./linkedin.json", "w") as f:
+            json.dump(data, f)
+
         # data = {
         #     section: self._scrape_section(
         #         url=f"{url}/{config.get('path', '')}",
@@ -141,7 +146,7 @@ class LinkedInCrawler(SeleniumCrawler[PostDocument]):
     ) -> str | list[str]:
         """Scrape a specific section of the LinkedIn profile."""
 
-        result: str | list[str]
+        result: str | list[str] = ""
         element: PageElement | Tag | None = None
         element_children: Iterable[PageElement] | Iterable[Tag] = []
         children_tag: str = ""
@@ -162,7 +167,7 @@ class LinkedInCrawler(SeleniumCrawler[PostDocument]):
                 children_tag, children_attrs, **children_kwargs
             )
 
-        if not element and not element_children:
+        if not element or (children and not element_children):
             return ""
 
         target_tag = tag if not element_children else children_tag
@@ -173,8 +178,10 @@ class LinkedInCrawler(SeleniumCrawler[PostDocument]):
                 div: PageElement = cast(PageElement, target_element)
                 result = div.get_text(strip=True)
             case "img":
-                img: Tag = cast(Tag, target_element)
-                if img.has_attr("img"):
+                result_set: ResultSet = cast(ResultSet, target_element)
+
+                img: Tag = cast(Tag, result_set.pop())
+                if img.has_attr("src"):
                     result = cast(str, img["src"])
             case "li":
                 result = []
@@ -183,6 +190,24 @@ class LinkedInCrawler(SeleniumCrawler[PostDocument]):
                     result.append("".join(li.get_text(strip=True)))
             case _:
                 raise UnsupportedTagError(f"Cannot crawl the specified tag: {tag}")
+
+        return result
+
+    def _extract_result(
+        self, tag: str, element: ResultSet | PageElement | Tag, multiple: bool = False
+    ) -> PageElement | Tag | list[PageElement] | list[Tag] | None:
+        result: PageElement | Tag | list[PageElement] | list[Tag] | None = None
+
+        if multiple:
+            result = []
+
+        match tag:
+            case "div" | "h1" | "main":
+                pass
+            case "img":
+                pass
+            case _:
+                pass
 
         return result
 
